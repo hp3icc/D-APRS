@@ -47,7 +47,7 @@ nano /opt/D-APRS/gps_data.cfg ;;
 sudo systemctl stop daprs.service && sudo systemctl start daprs.service && sudo systemctl enable daprs.service ;;
 3)
 sudo systemctl stop daprs.service && sudo systemctl disable daprs.service ;;
-15)
+4)
 break;
 esac
 done
