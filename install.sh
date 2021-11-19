@@ -1,4 +1,7 @@
 #!/bin/sh
+sudo apt-get install git -y
+sudo apt install python3-pip -y
+#
 cd /home/
 sudo cat > /home/requirements.txt <<- "EOF"
 bitstring>=3.1.5
