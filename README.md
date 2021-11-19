@@ -27,6 +27,8 @@ una vez instalado abrira el menu-aprs para que configure y ponga en marcha su ig
 
 * sudo
 
+* wget
+
 #
 
 # Instalacion
