@@ -68,7 +68,7 @@ Wants=network-online.target
 
 [Service]
 StandardOutput=null
-WorkingDirectory=/opt/D-APRS
+WorkingDirectory=/opt/hbnet
 RestartSec=3
 ExecStart=/usr/bin/python3 /opt/hbnet/gps_data.py
 Restart=on-abort
