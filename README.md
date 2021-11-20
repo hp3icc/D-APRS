@@ -36,3 +36,11 @@ una vez instalado abrira el menu-aprs para que configure y ponga en marcha su ig
 desde su terminal o consola ssh ejecute el bash de auto instalacion 
 
 sudo bash -c "$(wget -O - https://github.com/hp3icc/d-aprs/raw/main/install.sh)"
+
+#
+
+# Fuente y Creditos
+
+Decodificación de datos y GPS por Eric, KF7EEL
+
+https://github.com/kf7eel/hbnet
