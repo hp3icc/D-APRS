@@ -25,9 +25,11 @@ pip3 install -r requirements.txt
 sudo rm requirements.txt
 cd /opt/
 git clone https://github.com/kf7eel/hbnet.git
-cd /hbnet/
-wget https://raw.githubusercontent.com/hp3icc/D-APRS/main/gps_data.cfg
-wget https://raw.githubusercontent.com/hp3icc/D-APRS/main/user_settings.txt
+
+cd /opt/hbnet
+wget https://github.com/hp3icc/D-APRS/raw/main/gps_data.cfg
+wget https://github.com/hp3icc/D-APRS/raw/main/user_settings.txt
+
 sudo cat > /bin/menu-daprs <<- "EOF"
 #!/bin/bash
 while : ; do
