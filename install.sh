@@ -33,10 +33,12 @@ wget https://github.com/hp3icc/D-APRS/raw/main/user_settings.txt
 sudo cat > /bin/menu-daprs <<- "EOF"
 #!/bin/bash
 while : ; do
+choix=$(whiptail --title "TE1ws-Rev12a Raspbian Proyect HP3ICC Esteban Mackay 73." --menu "Suba o Baje con las flechas del teclado y seleccione el numero de opcion:" 16 65 5 \
 1 " Editar igate" \
 2 " Iniciar Igate " \
 3 " Detener Igate " \
 4 " Salir del menu " 3>&1 1>&2 2>&3)
+
 exitstatus=$?
 #on recupere ce choix
 #exitstatus=$?
@@ -58,7 +60,6 @@ break;
 esac
 done
 exit 0
-
 EOF
 #
 sudo cat > /lib/systemd/system/daprs.service <<- "EOF"
