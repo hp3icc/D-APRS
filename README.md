@@ -35,7 +35,7 @@ una vez instalado abrira el menu-aprs para que configure y ponga en marcha su ig
 
 desde su terminal o consola ssh ejecute el bash de auto instalacion :
 
-     sudo bash -c "$(wget -O - https://github.com/hp3icc/d-aprs/raw/main/install.sh)"
+    sudo bash -c "$(wget -O - https://github.com/hp3icc/d-aprs/raw/main/install.sh)"
 
 #
 
@@ -43,7 +43,7 @@ desde su terminal o consola ssh ejecute el bash de auto instalacion :
 
 desde su consola o terminal ssh , con permisos de super usuario o root,  escriba :  
 
-      menu-igate
+    menu-igate
 
 se abrira una ventana con opciones que le ayudara a configurar y poner en marcha su igate .
 
