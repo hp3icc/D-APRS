@@ -30,7 +30,7 @@ cd /opt/hbnet
 wget https://github.com/hp3icc/D-APRS/raw/main/gps_data.cfg
 wget https://github.com/hp3icc/D-APRS/raw/main/user_settings.txt
 
-sudo cat > /bin/menu <<- "EOF"
+sudo cat > /bin/menu-igate <<- "EOF"
 #!/bin/bash
 while : ; do
 choix=$(whiptail --title "D-APRS KF7EEL / Raspbian Proyect HP3ICC Esteban Mackay 73." --menu "Suba o Baje con las flechas del teclado y seleccione el numero de opcion:" 16 65 5 \
@@ -83,8 +83,8 @@ EOF
 #
 sudo chmod +777 /opt/hbnet/user_settings.txt
 sudo chmod +x /opt/hbnet/*.py
-sudo chmod +x /bin/menu
+sudo chmod +x /bin/menu-igate
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
 
-menu
+menu-igate
