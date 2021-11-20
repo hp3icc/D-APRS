@@ -41,9 +41,9 @@ sudo bash -c "$(wget -O - https://github.com/hp3icc/d-aprs/raw/main/install.sh)"
 
 # Configuracion
 
-desde su consola o terminal ssh , con permisos de super usuario o root,  escriba la palabra:  
+desde su consola o terminal ssh , con permisos de super usuario o root,  escriba :  
 
-menu 
+menu-igate
 
 y se abrira una ventana con opciones que le ayudara a configurar y poner en marcha su igate .
 
