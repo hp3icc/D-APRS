@@ -86,7 +86,4 @@ sudo chmod +x /bin/menu-daprs
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
 
-
-
-
-
+menu-daprs
