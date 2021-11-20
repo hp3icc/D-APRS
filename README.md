@@ -39,6 +39,16 @@ sudo bash -c "$(wget -O - https://github.com/hp3icc/d-aprs/raw/main/install.sh)"
 
 #
 
+# Configuracion
+
+desde su consola o terminal ssh , con permisos de super usuario o root,  escriba la palabra menu y se abrira una ventana con opciones que le ayudara a configurar y poner en marcha su igate .
+
+todos los parametros necesarios para poner en funcion su igate ya estan pre-configurados , debe remplazar por sus datos.
+
+se recomienda que el id coincida con su numero de MCC o server mas 999 , ejemplo de panama : 714999
+
+#
+
 # Fuente y Creditos
 
 Decodificación de datos y GPS por Eric, KF7EEL
