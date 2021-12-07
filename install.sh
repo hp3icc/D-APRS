@@ -17,6 +17,10 @@ folium
 mysql-connector
 resettabletimer>=0.7.0
 setproctitle
+requests
+libscrc
+resettabletimer
+cryptography
 
 
 EOF
