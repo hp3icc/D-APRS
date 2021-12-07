@@ -28,11 +28,7 @@ EOF
 pip3 install -r requirements.txt
 sudo rm requirements.txt
 cd /opt/
-git clone https://github.com/kf7eel/hbnet.git
-
-cd /opt/hbnet
-wget https://raw.githubusercontent.com/hp3icc/D-APRS/main/gps_data.cfg
-wget https://raw.githubusercontent.com/hp3icc/D-APRS/main/user_settings.txt
+git clone https://github.com/hp3icc/D-APRS.git
 
 sudo cat > /bin/menu-igate <<- "EOF"
 #!/bin/bash
@@ -54,7 +50,7 @@ fi
 # case : action en fonction du choix
 case $choix in
 1)
-nano /opt/hbnet/gps_data.cfg ;;
+nano /opt/D-APRS/gps_data.cfg ;;
 2)
 sudo systemctl stop daprs.service && sudo systemctl start daprs.service && sudo systemctl enable daprs.service ;;
 3)
@@ -74,9 +70,9 @@ Wants=network-online.target
 
 [Service]
 StandardOutput=null
-WorkingDirectory=/opt/hbnet
+WorkingDirectory=/opt/D-APRS
 RestartSec=3
-ExecStart=/usr/bin/python3 /opt/hbnet/gps_data.py
+ExecStart=/usr/bin/python3 /opt/D-APRS/gps_data.py
 Restart=on-abort
 
 [Install]
@@ -85,8 +81,8 @@ WantedBy=multi-user.target
 
 EOF
 #
-sudo chmod +777 /opt/hbnet/user_settings.txt
-sudo chmod +x /opt/hbnet/*.py
+sudo chmod +777 /opt/D-APRS/user_settings.txt
+sudo chmod +x /opt/D-APRS/*.py
 sudo chmod +x /bin/menu-igate
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
