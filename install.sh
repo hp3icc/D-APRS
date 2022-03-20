@@ -22,7 +22,14 @@ libscrc
 resettabletimer
 cryptography
 
-
+flask_user==1.0.2.2
+flask_sqlalchemy
+email_validator
+flask_babelex
+pymysql
+folium
+dmr_utils3
+uwsgi
 EOF
 ##
 pip3 install -r requirements.txt
