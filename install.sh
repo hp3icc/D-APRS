@@ -106,7 +106,7 @@ WantedBy=multi-user.target
 EOF
 #
 sudo chmod +777 /opt/D-APRS/user_settings.txt
-sudo chmod +x /opt/D-APRS/dashboard/dashboard.py
+sudo chmod +x /opt/D-APRS/dashboard/*.py
 sudo chmod +x /opt/D-APRS/*.py
 sudo chmod +x /bin/menu-igate
 sudo chmod 755 /lib/systemd/system/daprs-board.service
