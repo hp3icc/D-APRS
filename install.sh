@@ -57,7 +57,7 @@ sudo systemctl stop daprs.service && sudo systemctl start daprs.service && sudo 
 3)
 sudo systemctl stop daprs.service && sudo systemctl disable daprs.service ;;
 4)
-sudo systemctl stop daprs-board.service && systemctl start daprs-board.service && sudo systemctl enable daprs-board.service;;
+sudo systemctl stop daprs-board.service && systemctl start daprs-board.service && sudo systemctl enable daprs-board.service ;;
 5)
 sudo systemctl stop daprs-board.service && sudo systemctl disable daprs-board.service ;;
 6)
@@ -109,6 +109,7 @@ sudo chmod +777 /opt/D-APRS/user_settings.txt
 sudo chmod +x /opt/D-APRS/dashboard/dashboard.py
 sudo chmod +x /opt/D-APRS/*.py
 sudo chmod +x /bin/menu-igate
+sudo chmod 755 /lib/systemd/system/daprs-board.service
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
 
