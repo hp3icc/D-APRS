@@ -1,0 +1,117 @@
+{% include 'page.html' %}
+{% include 'header.html' %}
+<h2 style="text-align: center;">Attention:</h2>
+<p><span style="color: #ff0000;"><strong>Please be aware that many (if not all) DMR radios DO NOT transmit your callsign when sending a GPS position. It is your responsibility to identify your station per the regulations of your country.</strong></span></p>
+<p>&nbsp;</p>
+<p>{{description}}</p>
+<p>Configure your radio to send GPS positions with the following settings:</p>
+<table style="margin-left: auto; margin-right: auto;" border="black">
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Data Call Type</strong></td>
+<td style="text-align: center;"><strong>DMR ID</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">&nbsp;{{data_call_type}}</td>
+<td style="text-align: center;">&nbsp;{{data_call_id}}</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>When a position is received by this gateway, it will extract the coordinates and create an APRS position packet. This gateway will find your callsign based your radio's DMR ID. It is essential to have your information up to date with <a href="https://radioid.net/">RadioID.net</a>. A predefined APRS SSID of <strong>{{aprs_ssid}}</strong> is appended your callsign. The APRS location packet is then uploaded to APRS-IS. No setup or account creation is required beforehand. This is pretty much "plug and play."</p>
+<p>For example, N0CALL has a DMR ID of 1234567. N0CALL's radio sends a position to this gateway with the call type settings above. This gateway will query the <a href="https://radioid.net/">RadioID.net</a> database for DMR ID 1234567. The result will be an APRS location packet with APRS SSID&nbsp;{{aprs_ssid}}. </p>
+<p>You can change the default APRS settings for your radio via SMS.</p>
+<h2 style="text-align: center;">Commands</h2>
+<table style="margin-left: auto; margin-right: auto;" border="black">
+<tbody>
+<tr>
+<td style="text-align: center;">
+<h4><strong>Command</strong></h4>
+</td>
+<td style="text-align: center;">
+<h4><strong>Description</strong></h4>
+</td>
+<td style="text-align: center;">
+<h4><strong>Example</strong></h4>
+</td>
+</tr>
+<tr>
+<td><strong>@COM</strong></td>
+<td>Change the comment of the APRS.</td>
+<td><em><code>@COM This is a test comment.</code></em></td>
+</tr>
+<tr>
+<td><strong>@ICON</strong></td>
+<td>Change the icon of the APRS position. *See <a href="http://aprs.net/vm/DOS/SYMBOLS.HTM" rel="nofollow">http://aprs.net/vm/DOS/SYMBOLS.HTM</a> for icon list.</td>
+<td><em><code>@ICON /p</code></em></td>
+</tr>
+<tr>
+<td><strong>@SSID</strong></td>
+<td>Change SSID of your callsign.</td>
+<td><em><code>@SSID 7</code></em></td>
+</tr>
+<tr>
+<td><strong>@PIN</strong></td>
+<td>Set a PIN. This is used for changing your APRS settings ia the dashboard. You must set this for each DMR ID you wish to change via the dashboard.</td>
+<td><em><code>@PIN 1234</code></em></td>
+</tr>
+<tr>
+<td><strong>@MH</strong></td>
+<td>Set you location by maidenhead grid square. Designed for radios with no GPS or that are not compatable yet.</td>
+<td><em><code>@MH DN97uk</code></em></td>
+</tr>
+<tr>
+<td><strong>@BB</strong></td>
+<td>Post a bulliten to the web dashboard.</td>
+<td><em><code>@BB This is a test bulletin.</code></em></td>
+</tr>
+<tr>
+<td><strong>@[CALLSIGN W/ SSID] A-[MESSAGE]</strong></td>
+<td>Send a message to another station via APRS.</td>
+<td><em><code>@N0CALL-15 A-This is a test.</code></em></td>
+</tr>
+<tr>
+<td><strong>[EMAIL ADDRESS] E-[MESSAGE]</strong></td>
+<td>Send an email to an email address.</td>
+<td><em><code>test@example.org E-This is a test.</code></em></td>
+</tr>
+<tr>
+<td><strong>@[RECIPIENT CALLSIGN] M-[MESSAGE]</strong></td>
+<td>Post a message to the Mailbox.</td>
+<td><em>@N0CALL M-This is a test.</em></td>
+</tr>
+<tr>
+<td><strong>@REM MAIL</strong></td>
+<td>Remove all mail addressed to you.</td>
+<td><em>@REM MAIL</em></td>
+</tr>
+<tr>
+<td><strong>@SOS</strong></td>
+<td>EMERGENCY activation displays a banner on the main dashboard page.</td>
+<td><em>THIS IS AN EMERGENCY. @SOS</em></td>
+</tr>
+<tr>
+<td><strong>@NOTICE</strong></td>
+<td>Used to prominantly display a notice, similar to EMERGENCY activation.</td>
+<td><em>@NOTICE Server going down at 1800</em></td>
+</tr>
+<tr>
+<td><strong>@REM SOS</strong></td>
+<td>Removes an EMERGENCY or notice.</td>
+<td><em>@REM SOS</em></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p><strong>Commands should be in upper case.</strong> Send an SMS to <strong>{{data_call_id}}</strong> as a <strong>{{data_call_type}}</strong> with the desired command followed by the value. For example, to change your icon to a dog, the command would be <code>@ICON /p</code> (see the icon table for values). Changing your SSID is as simple as <code>@SSID 7</code>, and <code>@COM Testing 123</code> will change the comment.</p>
+<p>Sending <code>@BB Test</code> will result in a post to the bulletin board with the messaage of "Test".</p>
+<p><strong>To remove any of the stored values, just send the appropriate command without any input.</strong> <code>@COM</code> will remove the stored comment, <code>@ICON</code> will remove the stored icon, and <code>@ICON</code> will remove the strored icon. Any position reports sent will have the default settings.</p>
+
+<h3 style="text-align: center;">EMERGENCY Activation</h3>
+<p>The EMERGENCY Activation function will display a prominant banner accross the main dashboard page. The banner contains a message, time, callsign of station, and a link to the last known location of the station. This feature is intended to be used in situations where a user is in distress. To trigger an EMERGENCY activation, simply send an SMS to <strong>{{data_call_id}}</strong> with <strong>@SOS</strong> in the message. The <strong>@SOS</strong> command can be anywhere in the message. A less intimidating banner can be displayed for testing, or other purposes, by using <strong>@NOTICE</strong>. To remove the EMERGENCY activation, simply send the <strong>@REM SOS</strong> command.</p>
+<h3 style="text-align: center;">The Map</h3>
+<p>This dashboard now has a built in map. The map will display the last know location of stations and some previous plots from them. You can track a station by clicking on the red pin, and selecting the <strong>Track Station</strong> link. When tracking a station, you have a few options for a refresh rate, located in a drop down menu.</p>
+<h3 style="text-align: center;">The Mailbox</h3>
+<p>The Mailbox is a place where users can leave messages via DMR SMS. A user can leave a message for someone else by sending a formatted SMS to <strong>{{data_call_id}}</strong>. See the table above for a syntax example of posting a message to the Mailbox. The message recipient can then use the mailbox to check for messages. Message recipients can delete all of their messages by sending the command <strong>@REM MAIL</strong>. There is no way to remove a single message, it's all or none.</p>
+
+{% include 'footer.html' %}

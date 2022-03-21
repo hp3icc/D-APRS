@@ -1,0 +1,28 @@
+{% include 'page.html' %}
+{% include 'header.html' %}
+{{description}}
+<p>&nbsp;</p>
+<p>Contact information for this gateway.</p>
+<table style="margin-left: auto; margin-right: auto;" border="black">
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>{{contact_name}} </td>
+</tr>
+<tr>
+<td><strong>Callsign</strong></td>
+<td>&nbsp;{{contact_call}}</td>
+</tr>
+<tr>
+<td><strong>E-Mail</strong></td>
+<td>&nbsp;{{contact_email}}</td>
+</tr>
+<tr>
+<td><strong>Website</strong></td>
+<td>&nbsp;{{contact_website}}</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+{% include 'footer.html' %}
+

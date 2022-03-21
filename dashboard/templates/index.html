@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="120" > 
+    <title>{{title}}</title>
+    <style>
+body {background-color: D3D3D3;}
+h1   {color: green;}
+p {
+  padding: 10px;
+  margin: 20px;
+
+}
+.content {
+  max-width: 1200px;
+  min-width: 1200px;
+  margin: auto;
+}
+ .emergency_button {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: ##ff0000;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+</style>
+</head>
+<div class="content">
+<body>
+{% include 'header.html' %}
+{{emergency}}
+<p style="text-align: center;"><em>Page automatically reloads every 2 minutes.</em></p>
+<h4 style="text-align: center;"><a href="bulletin_rss.xml"><em>Bulletin Board RSS Feed</em></a><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5QIcFBAOXAevLAAAAZZJREFUSMftlbtKA0EUhj8jWhi8gaIEC29oxEoRFESLgIXYiWVSKoj6CCrBBwj6CBHNE1hEWy21ETQqiIW1wXhPo81ZOBw2apbdVPvDsDPnP8M/5zKzECJEQKivYO8DFoAYEAGKtTpQEvhW4w3IA+tAVy2F9fgEskA8COHUL8LOKAMZoMmLQF0FewcwImmNAzPANBB18b0BFoGroNLfBiyLgI2+BMwF3XgNwCrwYsQ//BBPSRPdAoeybjE+A8ClS+Sjfnf1E5A2dW4FzoxfwWvD/XWd7oAxI24jz3gVnpS7eiEpt+KvQEL5D5qal/245zFgU+pnXzMd+Zrh9/3q5l7g3CXtTs0bgWvFffn5vDa7iKcVv2K4DS8i3cAOsAuMm8h12ovqqrVL/R3upFrRKPBgHgctvm0iSynuWNnf5bf6byy5dPKe4nukhg6XU9yW2TfsJlDpNCUX27OaP8pD4WBCzQtmX381EUeAI3Xqe6m5xoHpYAezJuJkNb9Fh0tI4+SlXhpTwJBaZ+XbCcwr+6kcPESI2uAHmAijFaMnEmYAAAAASUVORK5CYII=" /></h4>
+<table>
+<tbody>
+<tr>
+<td><div><p align="center"><iframe style="border: none;" title="Bulletin Board" src="bulletin_board" width="480" height="950"></iframe></p></div></td>
+<td><div>
+<p align="center"><iframe style="border: none;" title="Positions Received" src="positions" width="620" height="950"></iframe></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+ {% include 'footer.html' %}
+
