@@ -39,6 +39,14 @@ desde su terminal o consola ssh ejecute el bash de auto instalacion
 
 #
 
+# Configuracion
+
+desde su terminal o consola ssh escriba:   menu-igate 
+
+    
+
+#
+
 # Fuente y Creditos
 
 Decodificación de datos y GPS por Eric, KF7EEL
