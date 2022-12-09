@@ -1,4 +1,5 @@
 #!/bin/sh
+apt update
 sudo apt-get install git -y
 sudo apt install python3-pip -y
 #
