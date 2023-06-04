@@ -1,8 +1,27 @@
 #!/bin/sh
-apt update
-sudo apt-get install git -y
-sudo apt install python3-pip -y
+apps=("git" "python3" "python3-pip" "sudo")
+
+for app in "${apps[@]}"
+do
+    # Verificar apps
+    if ! dpkg -s "$app" >/dev/null 2>&1; then
+        # app no instalada
+        sudo apt-get install -y "$app"
+    else
+        # app ya instalada
+        echo "$app ya instalada"
+    fi
+done
 #
+if [ -d "/opt/D-APRS" ];
+then
+   rm -r /opt/D-APRS/
+ #echo "found file"
+else
+ echo "dir not found"
+
+fi
+
 cd /home/
 sudo cat > /home/requirements.txt <<- "EOF"
 bitstring>=3.1.5
