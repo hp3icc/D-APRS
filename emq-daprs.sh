@@ -1,5 +1,5 @@
 #!/bin/sh
-apps=("git" "python3" "python3-pip" "sudo")
+apps=("git" "python3" "python3-pip" "sudo" "pkg-config" "python3-venv")
 
 for app in "${apps[@]}"
 do
@@ -21,7 +21,15 @@ else
  echo "dir not found"
 
 fi
+#############
+apt-get install python3-venv -y
+python3 -m venv env0
+source env0/bin/activate
+pip3 install --upgrade pip
+pip install pyopenssl --upgrade
+deactivate
 
+##################
 cd /home/
 sudo cat > /home/requirements.txt <<- "EOF"
 bitstring>=3.1.5
@@ -44,7 +52,7 @@ cryptography
 
 EOF
 ##
-pip3 install -r requirements.txt
+sudo pip install -U -r requirements.txt
 sudo rm requirements.txt
 cd /opt/
 git clone https://github.com/hp3icc/D-APRS.git
