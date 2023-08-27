@@ -1,18 +1,108 @@
-#!/bin/sh
-apps=("git" "python3" "python3-pip" "sudo" "pkg-config" "python3-venv")
+!/bin/bash
+# Verificar si el usuario tiene permisos de root
+if [[ $EUID -ne 0 ]]; then
+    echo "Este script debe ejecutarse como usuario ROOT"
+    exit 1
+fi
+# Actualizar la lista de paquetes una vez al principio
+sudo apt-get update
 
-for app in "${apps[@]}"
-do
-    # Verificar apps
-    if ! dpkg -s "$app" >/dev/null 2>&1; then
-        # app no instalada
-        sudo apt-get install -y "$app"
+# Función para verificar e instalar una aplicación
+check_and_install() {
+    app=$1
+    if ! dpkg -s $app >/dev/null 2>&1; then
+        echo "$app no está instalado. Instalando..."
+        sudo apt-get install $app -y
+        echo "$app instalado correctamente."
     else
-        # app ya instalada
-        echo "$app ya instalada"
+        echo "Verificando si hay actualizaciones para $app..."
+        available_version=$(apt-cache policy $app | grep 'Candidate' | awk '{print $2}')
+        current_version=$(dpkg -s $app | grep 'Version' | awk '{print $2}')
+        
+        if [ "$available_version" != "$current_version" ]; then
+            echo "Hay una versión actualizada de $app disponible. Actualizando..."
+            sudo apt-get install --only-upgrade $app -y
+            echo "$app actualizado correctamente."
+        else
+            echo "$app ya está instalado y actualizado."
+        fi
     fi
+}
+# Lista de aplicaciones para verificar e instalar
+apps=("wget" "git" "sudo" "python3" "python3-pip" "python3-dev" "python3-venv" "libffi-dev" "libssl-dev" "cargo" "pkg-config" "sed" "default-libmysqlclient-dev" "libmysqlclient-dev" "build-essential" "zip" "unzip" "python3-distutils" "python3-twisted" "python3-bitarray" "rrdtool" "openssl" "mariadb-server" "php" "libapache2-mod-php" "php-zip" "php-mbstring" "php-cli" "php-common" "php-curl" "php-xml" "php-mysql")
+
+# Verificar e instalar cada aplicación
+for app in "${apps[@]}"; do
+    check_and_install $app
 done
+# Verificar y actualizar python3-venv si no está instalado
+if ! dpkg -s python3-venv >/dev/null 2>&1; then
+    echo "python3-venv no está instalado. Instalando..."
+    sudo apt-get install python3-venv -y
+    echo "python3-venv instalado correctamente."
+fi
+# Crear y activar un entorno virtual
+cd /opt/
+python3 -m venv myenv
+source myenv/bin/activate
+
+# Instalar pip en el entorno virtual
+wget https://bootstrap.pypa.io/pip/get-pip.py
+python3 get-pip.py
+rm get-pip.py
+
+# Instalar paquetes en el entorno virtual
+sudo apt install -y libssl-dev
+python3 -m pip install --no-cache-dir --upgrade pip setuptools
+python3 -m pip install --no-cache-dir cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
+
+# Instalar Rust y configurar versión
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+
+rustup install 1.71.1
+rustup default 1.71.1
+
+# Desactivar el entorno virtual
+deactivate
+
+# Crear archivo requirements.txt y instalar paquetes
+cat <<EOF | sudo tee /opt/requirements.txt
+cryptography
+pyopenssl
+autobahn
+Twisted
+dmr_utils3
+bitstring
+jinja2
+MarkupSafe
+bitarray
+configparser
+aprslib
+attrs
+setuptools
+wheel
+service_identity
+pyOpenSSL
+mysqlclient
+pynmea2
+maidenhead
+flask
+folium
+mysql-connector
+resettabletimer
+setproctitle
+requests
+libscrc
+EOF
+
+sudo pip install --no-cache-dir --upgrade -r /opt/requirements.txt
+
+echo "Instalación completa."
+
+#####################################
 #
+cd /opt/
 if [ -d "/opt/D-APRS" ];
 then
    rm -r /opt/D-APRS/
@@ -21,40 +111,8 @@ else
  echo "dir not found"
 
 fi
-#############
-apt-get install python3-venv -y
-python3 -m venv env0
-source env0/bin/activate
-pip3 install --upgrade pip
-pip install pyopenssl --upgrade
-deactivate
+###############################
 
-##################
-cd /home/
-sudo cat > /home/requirements.txt <<- "EOF"
-bitstring>=3.1.5
-bitarray>=0.8.1
-Twisted>=16.3.0
-dmr_utils3>=0.1.19
-configparser>=3.0.0
-aprslib>=0.6.42
-pynmea2
-maidenhead
-flask
-folium
-mysql-connector
-resettabletimer>=0.7.0
-setproctitle
-requests
-libscrc
-resettabletimer
-cryptography
-
-EOF
-##
-sudo pip install -U -r requirements.txt
-sudo rm requirements.txt
-cd /opt/
 git clone https://github.com/hp3icc/D-APRS.git
 
 sudo cat > /bin/menu-igate <<- "EOF"
