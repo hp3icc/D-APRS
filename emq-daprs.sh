@@ -41,13 +41,41 @@ fi
 # case : action en fonction du choix
 case $choix in
 1)
-nano /opt/D-APRS/gps_data.cfg ;;
+nano /opt/D-APRS/gps_data.cfg &&
+variable80=$(grep "DASH_PORT:" /opt/D-APRS/gps_data.cfg | grep -Eo '[A.0-9]{1,9}')
+if sudo netstat -tuln | grep -q "0.0.0.0:$variable80 "; then
+        whiptail --title "Check Port" --msgbox "El puerto $variable80 esta ocupado  , The port $variable80 is busy" 0 50
+else
+
+  if sudo systemctl status daprs-board.service |grep "service; enabled;" >/dev/null 2>&1
+   then 
+   sudo systemctl restart daprs-board.service
+  fi
+fi ;;
 2)
 sudo systemctl stop daprs.service && sudo systemctl start daprs.service && sudo systemctl enable daprs.service ;;
 3)
 sudo systemctl stop daprs.service && sudo systemctl disable daprs.service ;;
 4)
-sudo systemctl stop daprs-board.service && systemctl start daprs-board.service && sudo systemctl enable daprs-board.service ;;
+if sudo systemctl status daprs-board.service |grep "service; enabled;" >/dev/null 2>&1
+   then 
+   sudo systemctl disable daprs-board.service
+fi
+if sudo systemctl status daprs-board.service |grep active >/dev/null 2>&1
+then 
+   sudo systemctl stop daprs-board.service
+fi
+variable80=$(grep "DASH_PORT:" /opt/D-APRS/gps_data.cfg | grep -Eo '[A.0-9]{1,9}')
+if sudo netstat -tuln | grep -q "0.0.0.0:$variable80 "; then
+        whiptail --title "Check Port" --msgbox "El puerto $variable80 esta ocupado  , The port $variable80 is busy" 0 50
+else
+
+  if ! sudo systemctl status daprs-board.service |grep "service; enabled;" >/dev/null 2>&1
+   then 
+   sudo systemctl enable daprs-board.service
+  fi
+  sudo systemctl start daprs-board.service
+fi ;;
 5)
 sudo systemctl stop daprs-board.service && sudo systemctl disable daprs-board.service ;;
 6)
