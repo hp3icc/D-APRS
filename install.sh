@@ -1,7 +1,7 @@
-#!/bin/sh
+ #!/bin/sh
 apt update
 sudo apt-get install git -y
-sudo apt install python3-pip -y
+sudo apt-get install python3-pip -y
 #
 cd /home/
 sudo cat > /home/requirements.txt <<- "EOF"
