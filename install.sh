@@ -1,5 +1,6 @@
  #!/bin/sh
-apt update
+# Actualizar la lista de paquetes una vez al principio
+ apt-get update && apt-get upgrade -y
 sudo apt-get install git -y
 sudo apt-get install python3-pip -y
 #
