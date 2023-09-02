@@ -1,33 +1,86 @@
- #!/bin/sh
+#!/bin/bash
+
+# Verificar si el usuario tiene permisos de root
+if [[ $EUID -ne 0 ]]; then
+    echo "Este script debe ejecutarse como usuario ROOT"
+    exit 1
+fi
 # Actualizar la lista de paquetes una vez al principio
  apt-get update && apt-get upgrade -y
-sudo apt-get install git -y
-sudo apt-get install python3-pip -y
-#
-cd /home/
-sudo cat > /home/requirements.txt <<- "EOF"
-bitstring>=3.1.5
-bitarray>=0.8.1
-Twisted>=16.3.0
-dmr_utils3>=0.1.19
-configparser>=3.0.0
-aprslib>=0.6.42
-pynmea2
-maidenhead
-flask
-folium
-mysql-connector
-resettabletimer>=0.7.0
-setproctitle
-requests
-libscrc
-resettabletimer
-cryptography
 
-EOF
-##
-pip3 install -r requirements.txt
-sudo rm requirements.txt
+# Lista de aplicaciones para verificar e instalar
+apps=("sudo" "curl" "git" "make" "build-essential" "libusb-1.0-0-dev" "python" "python3" "python3-pip" "chkconfig" "git-core" "libi2c-dev" "i2c-tools" "lm-sensors" "python3-websockets" "python3-gpiozero" "python3-psutil" "python3-serial" "wget" "sudo" "python3-dev" "python3-venv" "libffi-dev" "libssl-dev" "cargo" "pkg-config" "sed" "default-libmysqlclient-dev" "libmysqlclient-dev" "build-essential" "zip" "unzip" "python3-distutils" "python3-twisted" "python3-bitarray" "rrdtool" "openssl" "wavemon" "gcc" "g++" "cmake" "libasound2-dev" "libudev-dev" "gpsd" "libgps-dev" "gpsd-clients" "gpsd-tools" "chrony")
+
+# Función para verificar e instalar una aplicación
+check_and_install() {
+    app=$1
+    if ! dpkg -s $app 2>/dev/null | grep -q "Status: install ok installed"; then
+        echo "$app no está instalado. Instalando..."
+        sudo apt-get install -y $app
+        echo "$app instalado correctamente."
+    else
+        echo "$app ya está instalado."
+    fi
+}
+
+# Verificar e instalar cada aplicación
+for app in "${apps[@]}"; do
+    check_and_install $app
+done
+
+# Verificar y actualizar python3-venv si no está instalado
+if ! dpkg -s python3-venv >/dev/null 2>&1; then
+    echo "python3-venv no está instalado. Instalando..."
+    apt-get install python3-venv -y
+    echo "python3-venv instalado correctamente."
+fi
+
+# Crear y activar un entorno virtual
+cd /opt/
+python3 -m venv myenv
+source myenv/bin/activate
+
+# Instalar pip en el entorno virtual
+if [ -f "/opt/get-pip.py" ]
+then
+   rm /opt/get-pip.*
+fi
+wget https://bootstrap.pypa.io/pip/get-pip.py
+python3 get-pip.py
+rm get-pip.*
+
+# Instalar paquetes en el entorno virtual
+apt-get install -y libssl-dev
+
+python3 -m pip install pip setuptools
+python3 -m pip install cryptography Twisted bitstring MarkupSafe bitarray configparser aprslib attrs wheel service_identity pyOpenSSL mysqlclient tinydb ansi2html mysql-connector-python pandas xlsxwriter cursor pynmea2 maidenhead flask folium mysql-connector resettabletimer setproctitle requests libscrc Pyro5
+
+# Desactivar el entorno virtual
+deactivate
+
+#pip install cryptography pyopenssl autobahn Twisted bitstring MarkupSafe bitarray configparser aprslib attrs wheel service_identity pyOpenSSL mysqlclient tinydb ansi2html mysql-connector-python pandas xlsxwriter cursor pynmea2 maidenhead flask folium mysql-connector resettabletimer setproctitle requests libscrc Pyro5
+
+cd /opt
+# Instalar Rust y configurar versión
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+
+rustup install 1.72.0
+rustup default 1.72.0
+
+/usr/bin/python3 -m pip install --upgrade pyOpenSSL
+/usr/bin/python3 -m pip install --upgrade autobahn
+/usr/bin/python3 -m pip install --upgrade jinja2
+/usr/bin/python3 -m pip install --upgrade dmr-utils3
+/usr/bin/python3 -m pip install --upgrade ansi2html
+/usr/bin/python3 -m pip install --upgrade aprslib
+/usr/bin/python3 -m pip install --upgrade tinydb
+/usr/bin/python3 -m pip install --upgrade mysqlclient
+/usr/bin/python3 -m pip install --upgrade setproctitle
+/usr/bin/python3 -m pip install --upgrade pynmea2
+echo "Instalación completa."
+
+####################
 cd /opt/
 git clone https://github.com/hp3icc/D-APRS.git
 
