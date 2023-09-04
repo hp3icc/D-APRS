@@ -78,6 +78,7 @@ rustup default 1.72.0
 /usr/bin/python3 -m pip install --upgrade mysqlclient
 /usr/bin/python3 -m pip install --upgrade setproctitle
 /usr/bin/python3 -m pip install --upgrade pynmea2
+/usr/bin/python3 -m pip install --upgrade maidenhead
 echo "Instalación completa."
 
 ####################
