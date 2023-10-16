@@ -49,7 +49,8 @@ else
 
   if sudo systemctl status daprs-board.service |grep "service; enabled;" >/dev/null 2>&1
    then 
-   sudo systemctl restart daprs-board.service
+   sudo systemctl stop daprs-board.service
+   sudo systemctl start daprs-board.service
   fi
 fi ;;
 2)
