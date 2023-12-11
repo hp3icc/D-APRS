@@ -1,4 +1,9 @@
 !/bin/bash
+# Nombre del script
+SCRIPT_NAME="emq-daprs.sh"
+
+# Registra el inicio en /opt/curl.txt
+echo "Inicio: $SCRIPT_NAME" >> /opt/curl.txt
 # Verificar si el usuario tiene permisos de root
 if [[ $EUID -ne 0 ]]; then
     echo "Este script debe ejecutarse como usuario ROOT"
@@ -130,5 +135,5 @@ sudo chmod +x /bin/menu-igate
 sudo chmod 755 /lib/systemd/system/daprs-board.service
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
-
-
+# Registra el final en /opt/curl.txt
+echo "Finalizado: $SCRIPT_NAME" >> /opt/curl.txt
