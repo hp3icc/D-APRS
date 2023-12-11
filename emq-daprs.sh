@@ -16,7 +16,6 @@ else
 
 fi
 ###############################
-
 git clone https://github.com/hp3icc/D-APRS.git
 
 sudo cat > /bin/menu-igate <<- "EOF"
