@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # Nombre del script
 SCRIPT_NAME="emq-daprs.sh"
 
