@@ -128,12 +128,14 @@ WantedBy=multi-user.target
 
 EOF
 #
-sudo chmod +777 /opt/D-APRS/user_settings.txt
-sudo chmod +x /opt/D-APRS/dashboard/*.py
-sudo chmod +x /opt/D-APRS/*.py
+sudo chmod -R 777 /opt/D-APRS/*
+sudo chmod -R +x /opt/D-APRS/*
+ln sf /bin/menu-igate /bin/MENU-IGATE
 sudo chmod +x /bin/menu-igate
+sudo chmod +x /bin/MENU-IGATE
 sudo chmod 755 /lib/systemd/system/daprs-board.service
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
+/usr/bin/python3 -m pip install --upgrade folium
 # Registra el final en /opt/curl.txt
 echo "Finalizado: $SCRIPT_NAME" >> /opt/curl.txt

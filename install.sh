@@ -67,7 +67,7 @@ source $HOME/.cargo/env
 
 rustup install 1.72.0
 rustup default 1.72.0
-
+/usr/bin/python3 -m pip install --upgrade folium
 /usr/bin/python3 -m pip install --upgrade pyOpenSSL
 /usr/bin/python3 -m pip install --upgrade autobahn
 /usr/bin/python3 -m pip install --upgrade jinja2
