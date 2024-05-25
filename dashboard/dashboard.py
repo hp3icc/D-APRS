@@ -21,7 +21,8 @@
 This is a web dashboard for the GPS/Data application.
 '''
 
-from flask import Flask, render_template, request, Response, Markup
+from flask import Flask, render_template, request, Response
+from markupsafe import Markup
 import ast, os
 #from dashboard_settings import *
 import folium
