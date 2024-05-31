@@ -22,6 +22,7 @@ else
 fi
 ###############################
 git clone https://github.com/hp3icc/D-APRS.git
+cd /opt/D-APRS/
 
 sudo cat > /bin/menu-igate <<- "EOF"
 #!/bin/bash
@@ -130,12 +131,13 @@ EOF
 #
 sudo chmod -R 777 /opt/D-APRS/*
 sudo chmod -R +x /opt/D-APRS/*
-ln sf /bin/menu-igate /bin/MENU-IGATE
+ln -sf /bin/menu-igate /bin/MENU-IGATE
 sudo chmod +x /bin/menu-igate
 sudo chmod +x /bin/MENU-IGATE
 sudo chmod 755 /lib/systemd/system/daprs-board.service
 sudo chmod 755 /lib/systemd/system/daprs.service
 sudo systemctl daemon-reload
-/usr/bin/python3 -m pip install --upgrade folium
+/usr/bin/python3 -m pip install --upgrade -r requirements.txt
+
 # Registra el final en /opt/curl.txt
 echo "Finalizado: $SCRIPT_NAME" >> /opt/curl.txt
