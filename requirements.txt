@@ -1,0 +1,14 @@
+configparser>=3.0.0
+flask
+flask_user==1.0.2.2
+flask_sqlalchemy
+email_validator
+flask_babelex
+pymysql
+folium
+requests
+libscrc
+dmr_utils3
+cryptography
+uwsgi
+Flask-Markdown
