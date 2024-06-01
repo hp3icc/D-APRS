@@ -10,5 +10,4 @@ requests
 libscrc
 dmr_utils3
 cryptography
-uwsgi
 Flask-Markdown
