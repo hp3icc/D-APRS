@@ -13,3 +13,4 @@ cryptography
 Flask-Markdown
 twisted
 aprslib
+pynmea2
