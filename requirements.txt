@@ -12,3 +12,4 @@ dmr_utils3
 cryptography
 Flask-Markdown
 twisted
+aprslib
