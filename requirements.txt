@@ -16,3 +16,5 @@ aprslib
 pynmea2
 bitarray
 maidenhead
+Werkzeug
+gunicorn
