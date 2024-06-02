@@ -14,3 +14,5 @@ Flask-Markdown
 twisted
 aprslib
 pynmea2
+bitarray
+maidenhead
