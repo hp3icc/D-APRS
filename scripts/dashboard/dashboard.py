@@ -283,7 +283,7 @@ def view_map():
                     """, tooltip=str(user_coord['call']), fill=True, fill_color="#3186cc", radius=4).add_to(marker_cluster)
             #return folium_map._repr_html_()
                 if not reload_time:
-                    reload_time = 120
+                    reload_time = 60
             if not map_size:
                 map_view = '''<table style="width: 1000px; height: 600px; margin-left: auto; margin-right: auto;" border="1">
                         <tbody>
@@ -306,7 +306,7 @@ def view_map():
                     <p style="text-align: center;"><em>Page automatically reloads every """ + str(reload_time) + """ seconds.</em></p>
                     <p style="text-align: center;">
                         <select name="sample" onchange="location = this.value;">
-                         <option value="view_map?track=""" + track_call + """&reload=120">2 Minutes</option>
+                         <option value="view_map?track=""" + track_call + """&reload=60">1 Minutes</option>
                          <option value="view_map?track=""" + track_call + """&reload=">Don't Reload</option>
                          <option value="view_map?track=""" + track_call + """&reload=30">30 Seconds</option>
                          <option value="view_map?track=""" + track_call + """&reload=5">5 Minutes</option>
