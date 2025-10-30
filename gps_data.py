@@ -4,6 +4,7 @@
 #   HBLink - Copyright (C) 2020 Cortney T. Buffington, N0MJS <n0mjs@me.com>
 #   GPS/Data - Copyright (C) 2020 Eric Craw, KF7EEL <kf7eel@qsl.net>
 #   Annotated modifications Copyright (C) 2021 Xavier FRS2013
+#   STRING & DASH mod - Copyright (C) 2025 Esteban HP3ICC
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -358,28 +359,28 @@ def process_sms(_rf_src, sms):
         logger.info('Latitude: ' + str(aprs_lat))
         logger.info('Longitude: ' + str(aprs_lon))
         # 14FRS2013 simplified and moved settings retrieval
-        user_settings = ast.literal_eval(os.popen('cat ' + user_settings_file).read())	
-        if int_id(_rf_src) not in user_settings:	
-            ssid = str(user_ssid)	
-            icon_table = '/'	
-            icon_icon = '['	
-            comment = aprs_comment + ' DMR ID: ' + str(int_id(_rf_src)) 	
-        else:	
-            if user_settings[int_id(_rf_src)][1]['ssid'] == '':	
-                ssid = user_ssid	
-            if user_settings[int_id(_rf_src)][3]['comment'] == '':	
-                comment = aprs_comment + ' DMR ID: ' + str(int_id(_rf_src))	
-            if user_settings[int_id(_rf_src)][2]['icon'] == '':	
-                icon_table = '/'	
-                icon_icon = '['	
-            if user_settings[int_id(_rf_src)][2]['icon'] != '':	
-                icon_table = user_settings[int_id(_rf_src)][2]['icon'][0]	
-                icon_icon = user_settings[int_id(_rf_src)][2]['icon'][1]	
-            if user_settings[int_id(_rf_src)][1]['ssid'] != '':	
-                ssid = user_settings[int_id(_rf_src)][1]['ssid']	
-            if user_settings[int_id(_rf_src)][3]['comment'] != '':	
-                comment = user_settings[int_id(_rf_src)][3]['comment']	
-        aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + ssid + '>APHBL3,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(aprs_lat) + icon_table + str(aprs_lon) + icon_icon + '/' + str(comment)
+        user_settings = ast.literal_eval(os.popen('cat ' + user_settings_file).read())  
+        if int_id(_rf_src) not in user_settings:    
+            ssid = str(user_ssid)   
+            icon_table = '/'    
+            icon_icon = '[' 
+            comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
+        else:   
+            if user_settings[int_id(_rf_src)][1]['ssid'] == '': 
+                ssid = user_ssid    
+            if user_settings[int_id(_rf_src)][3]['comment'] == '':  
+                comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
+            if user_settings[int_id(_rf_src)][2]['icon'] == '': 
+                icon_table = '/'    
+                icon_icon = '[' 
+            if user_settings[int_id(_rf_src)][2]['icon'] != '': 
+                icon_table = user_settings[int_id(_rf_src)][2]['icon'][0]   
+                icon_icon = user_settings[int_id(_rf_src)][2]['icon'][1]    
+            if user_settings[int_id(_rf_src)][1]['ssid'] != '': 
+                ssid = user_settings[int_id(_rf_src)][1]['ssid']    
+            if user_settings[int_id(_rf_src)][3]['comment'] != '':  
+                comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + user_settings[int_id(_rf_src)][3]['comment']
+        aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + ssid + '>APHPIB,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(aprs_lat) + icon_table + str(aprs_lon) + icon_icon + '/' + str(comment)
         logger.info(aprs_loc_packet)
         logger.info('User comment: ' + comment)
         logger.info('User SSID: ' + ssid)
@@ -406,7 +407,7 @@ def process_sms(_rf_src, sms):
             ssid = user_settings[int_id(_rf_src)][1]['ssid']
         else:
             ssid = user_ssid
-        aprs_msg_pkt = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + str(ssid) + '>APHBL3,TCPIP*::' + str(aprs_dest).ljust(9).upper() + ':' + aprs_msg[0:73]
+        aprs_msg_pkt = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + str(ssid) + '>APHPIB,TCPIP*::' + str(aprs_dest).ljust(9).upper() + ':' + aprs_msg[0:73]
         logger.info(aprs_msg_pkt)
         try:
             aprslib.parse(aprs_msg_pkt)
@@ -495,27 +496,27 @@ class DATA_SYSTEM(HBSYSTEM):
                     logger.info('Lat: ' + str(aprs_lat) + ' Lon: ' + str(aprs_lon))
                     # 14FRS2013 simplified and moved settings retrieval
                     user_settings = ast.literal_eval(os.popen('cat ' + user_settings_file).read())
-                    if int_id(_rf_src) not in user_settings:	
-                        ssid = str(user_ssid)	
-                        icon_table = '/'	
-                        icon_icon = '['	
-                        comment = aprs_comment + ' DMR ID: ' + str(int_id(_rf_src)) 	
-                    else:	
-                        if user_settings[int_id(_rf_src)][1]['ssid'] == '':	
-                            ssid = user_ssid	
-                        if user_settings[int_id(_rf_src)][3]['comment'] == '':	
-                            comment = aprs_comment + ' DMR ID: ' + str(int_id(_rf_src))	
-                        if user_settings[int_id(_rf_src)][2]['icon'] == '':	
-                            icon_table = '/'	
-                            icon_icon = '['	
-                        if user_settings[int_id(_rf_src)][2]['icon'] != '':	
-                            icon_table = user_settings[int_id(_rf_src)][2]['icon'][0]	
-                            icon_icon = user_settings[int_id(_rf_src)][2]['icon'][1]	
-                        if user_settings[int_id(_rf_src)][1]['ssid'] != '':	
-                            ssid = user_settings[int_id(_rf_src)][1]['ssid']	
-                        if user_settings[int_id(_rf_src)][3]['comment'] != '':	
-                            comment = user_settings[int_id(_rf_src)][3]['comment']
-                    aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + ssid + '>APHBL3,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(aprs_lat) + icon_table + str(aprs_lon) + icon_icon + '/' + str(comment)
+                    if int_id(_rf_src) not in user_settings:    
+                        ssid = str(user_ssid)   
+                        icon_table = '/'    
+                        icon_icon = '[' 
+                        comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
+                    else:   
+                        if user_settings[int_id(_rf_src)][1]['ssid'] == '': 
+                            ssid = user_ssid    
+                        if user_settings[int_id(_rf_src)][3]['comment'] == '':  
+                            comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
+                        if user_settings[int_id(_rf_src)][2]['icon'] == '': 
+                            icon_table = '/'    
+                            icon_icon = '[' 
+                        if user_settings[int_id(_rf_src)][2]['icon'] != '': 
+                            icon_table = user_settings[int_id(_rf_src)][2]['icon'][0]   
+                            icon_icon = user_settings[int_id(_rf_src)][2]['icon'][1]    
+                        if user_settings[int_id(_rf_src)][1]['ssid'] != '': 
+                            ssid = user_settings[int_id(_rf_src)][1]['ssid']    
+                        if user_settings[int_id(_rf_src)][3]['comment'] != '':  
+                            comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + user_settings[int_id(_rf_src)][3]['comment']
+                    aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + ssid + '>APHPIB,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(aprs_lat) + icon_table + str(aprs_lon) + icon_icon + '/' + str(comment)
                     logger.info(aprs_loc_packet)
                     logger.info('User comment: ' + comment)
                     logger.info('User SSID: ' + ssid)
@@ -590,35 +591,35 @@ class DATA_SYSTEM(HBSYSTEM):
                                 # Begin APRS format and upload
                                 # Disable opening file for reading to reduce "collision" or reading and writing at same time.
                                 # 14FRS2013 simplified and moved settings retrieval
-                                user_settings = ast.literal_eval(os.popen('cat ' + user_settings_file).read())	
-                                if int_id(_rf_src) not in user_settings:	
-                                    ssid = str(user_ssid)	
-                                    icon_table = '/'	
-                                    icon_icon = '['	
-                                    comment = aprs_comment + ' DMR ID: ' + str(int_id(_rf_src)) 	
-                                else:	
-                                    if user_settings[int_id(_rf_src)][1]['ssid'] == '':	
-                                        ssid = user_ssid	
-                                    if user_settings[int_id(_rf_src)][3]['comment'] == '':	
-                                        comment = aprs_comment + ' DMR ID: ' + str(int_id(_rf_src))	
-                                    if user_settings[int_id(_rf_src)][2]['icon'] == '':	
-                                        icon_table = '/'	
-                                        icon_icon = '['	
-                                    if user_settings[int_id(_rf_src)][2]['icon'] != '':	
-                                        icon_table = user_settings[int_id(_rf_src)][2]['icon'][0]	
-                                        icon_icon = user_settings[int_id(_rf_src)][2]['icon'][1]	
-                                    if user_settings[int_id(_rf_src)][1]['ssid'] != '':	
-                                        ssid = user_settings[int_id(_rf_src)][1]['ssid']	
-                                    if user_settings[int_id(_rf_src)][3]['comment'] != '':	
-                                        comment = user_settings[int_id(_rf_src)][3]['comment']	
-                                aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + ssid + '>APHBL3,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(loc.lat[0:7]) + str(loc.lat_dir) + icon_table + str(loc.lon[0:8]) + str(loc.lon_dir) + icon_icon + str(round(loc.true_course)).zfill(3) + '/' + str(round(loc.spd_over_grnd)).zfill(3) + '/' + str(comment)
+                                user_settings = ast.literal_eval(os.popen('cat ' + user_settings_file).read())  
+                                if int_id(_rf_src) not in user_settings:    
+                                    ssid = str(user_ssid)   
+                                    icon_table = '/'    
+                                    icon_icon = '[' 
+                                    comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
+                                else:   
+                                    if user_settings[int_id(_rf_src)][1]['ssid'] == '': 
+                                        ssid = user_ssid    
+                                    if user_settings[int_id(_rf_src)][3]['comment'] == '':  
+                                        comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
+                                    if user_settings[int_id(_rf_src)][2]['icon'] == '': 
+                                        icon_table = '/'    
+                                        icon_icon = '[' 
+                                    if user_settings[int_id(_rf_src)][2]['icon'] != '': 
+                                        icon_table = user_settings[int_id(_rf_src)][2]['icon'][0]   
+                                        icon_icon = user_settings[int_id(_rf_src)][2]['icon'][1]    
+                                    if user_settings[int_id(_rf_src)][1]['ssid'] != '': 
+                                        ssid = user_settings[int_id(_rf_src)][1]['ssid']    
+                                    if user_settings[int_id(_rf_src)][3]['comment'] != '':  
+                                        comment = str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + user_settings[int_id(_rf_src)][3]['comment']
+                                aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + ssid + '>APHPIB,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(loc.lat[0:7]) + str(loc.lat_dir) + icon_table + str(loc.lon[0:8]) + str(loc.lon_dir) + icon_icon + str(round(loc.true_course)).zfill(3) + '/' + str(round(loc.spd_over_grnd)).zfill(3) + '/' + str(comment)
                                 logger.info(aprs_loc_packet)
                                 logger.info('User comment: ' + comment)
                                 logger.info('User SSID: ' + ssid)
                                 logger.info('User icon: ' + icon_table + icon_icon)
                             except Exception as error_exception:
                                 logger.info('Error or user settings file not found, proceeding with default settings.')
-                                aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + str(user_ssid) + '>APHBL3,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(loc.lat[0:7]) + str(loc.lat_dir) + '/' + str(loc.lon[0:8]) + str(loc.lon_dir) + '[' + str(round(loc.true_course)).zfill(3) + '/' + str(round(loc.spd_over_grnd)).zfill(3) + '/' + aprs_comment + ' DMR ID: ' + str(int_id(_rf_src))
+                                aprs_loc_packet = str(get_alias(int_id(_rf_src), subscriber_ids)) + '-' + str(user_ssid) + '>APHPIB,TCPIP*:@' + str(datetime.datetime.utcnow().strftime("%H%M%Sh")) + str(loc.lat[0:7]) + str(loc.lat_dir) + '/' + str(loc.lon[0:8]) + str(loc.lon_dir) + '[' + str(round(loc.true_course)).zfill(3) + '/' + str(round(loc.spd_over_grnd)).zfill(3) + '/' + str(get_alias(int_id(_rf_src), subscriber_ids)) + ' DMR ID: ' + str(int_id(_rf_src)) + ' / ' + aprs_comment
                                 logger.info(error_exception)
                                 logger.info(str(traceback.extract_tb(error_exception.__traceback__)))
                             try:
@@ -674,8 +675,8 @@ class DATA_SYSTEM(HBSYSTEM):
                         # Reset the packet assembly to prevent old data from returning.
                         # 14FRS2013 moved variable reset
                         hdr_start = ''
-                        n_packet_assembly = 0	
-                        packet_assembly = ''	
+                        n_packet_assembly = 0   
+                        packet_assembly = ''    
                         btf = 0
                     #logger.info(_seq)
                     #packet_assembly = '' #logger.info(_dtype_vseq)
@@ -776,7 +777,7 @@ if __name__ == '__main__':
     if cli_args.LOG_LEVEL:
         CONFIG['LOGGER']['LOG_LEVEL'] = cli_args.LOG_LEVEL
     logger = log.config_logging(CONFIG['LOGGER'])
-    logger.info('\n\nCopyright (c) 2013, 2014, 2015, 2016, 2018, 2019\n\tThe Regents of the K0USY Group. All rights reserved.\n GPS and Data decoding by Eric, KF7EEL')
+    logger.info('\n\nCopyright (c) 2013, 2014, 2015, 2016, 2018, 2019\n\tThe Regents of the K0USY Group. All rights reserved.\n GPS and Data decoding by Eric, KF7EEL.\n 2025 mod by Esteban HP3ICC.')
     logger.debug('Logging system started, anything from here on gets logged')
 
     # Set up the signal handler
@@ -814,7 +815,3 @@ if __name__ == '__main__':
             logger.debug('%s instance created: %s, %s', CONFIG['SYSTEMS'][system]['MODE'], system, systems[system])
 
     reactor.run()
-
-    
-# John 3:16 - For God so loved the world, that he gave his only Son,
-# that whoever believes in him should not perish but have eternal life.
