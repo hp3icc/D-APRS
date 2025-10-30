@@ -5,12 +5,11 @@
     <meta http-equiv="refresh" content="60" > 
     <title>{{title}}</title>
     <style>
-body {background-color: D3D3D3;}
+body {background-color: D3D3D3; margin: 0; padding: 0;}
 h1   {color: green;}
 p {
   padding: 10px;
   margin: 20px;
-
 }
 .content {
   max-width: 1200px;
@@ -21,29 +20,141 @@ p {
   display: block;
   width: 100%;
   border: none;
-  background-color: ##ff0000;
+  background-color: #ff0000;
   padding: 14px 28px;
   font-size: 16px;
   cursor: pointer;
   text-align: center;
 }
+.iframe-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+.iframe-wrapper {
+  flex: 1;
+  border: 1px solid #ccc;
+  background: white;
+  overflow: hidden;
+}
+.iframe-auto {
+  width: 100%;
+  height: 200px; /* Altura inicial mínima */
+  border: none;
+  display: block;
+}
+.footer-immediate {
+  margin-top: 0;
+  padding: 15px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-top: 2px solid #dee2e6;
+  width: 100%;
+}
 </style>
 </head>
-<div class="content">
 <body>
+<div class="content">
 {% include 'header.html' %}
 {{emergency}}
 <p style="text-align: center;"><em>Page automatically reloads every 1 minutes.</em></p>
 <h4 style="text-align: center;"><a href="bulletin_rss.xml"><em>Bulletin Board RSS Feed</em></a><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5QIcFBAOXAevLAAAAZZJREFUSMftlbtKA0EUhj8jWhi8gaIEC29oxEoRFESLgIXYiWVSKoj6CCrBBwj6CBHNE1hEWy21ETQqiIW1wXhPo81ZOBw2apbdVPvDsDPnP8M/5zKzECJEQKivYO8DFoAYEAGKtTpQEvhW4w3IA+tAVy2F9fgEskA8COHUL8LOKAMZoMmLQF0FewcwImmNAzPANBB18b0BFoGroNLfBiyLgI2+BMwF3XgNwCrwYsQ//BBPSRPdAoeybjE+A8ClS+Sjfnf1E5A2dW4FzoxfwWvD/XWd7oAxI24jz3gVnpS7eiEpt+KvQEL5D5qal/245zFgU+pnXzMd+Zrh9/3q5l7g3CXtTs0bgWvFffn5vDa7iKcVv2K4DS8i3cAOsAuMm8h12ovqqrVL/R3upFrRKPBgHgctvm0iSynuWNnf5bf6byy5dPKe4nukhg6XU9yW2TfsJlDpNCUX27OaP8pD4WBCzQtmX381EUeAI3Xqe6m5xoHpYAezJuJkNb9Fh0tI4+SlXhpTwJBaZ+XbCcwr+6kcPESI2uAHmAijFaMnEmYAAAAASUVORK5CYII=" /></h4>
-<table>
-<tbody>
-<tr>
-<td><div><p align="center"><iframe style="border: none;" title="Bulletin Board" src="bulletin_board" width="480" height="950"></iframe></p></div></td>
-<td><div>
-<p align="center"><iframe style="border: none;" title="Positions Received" src="positions" width="620" height="950"></iframe></p>
-</div></td>
-</tr>
-</tbody>
-</table>
- {% include 'footer.html' %}
 
+<div class="iframe-container">
+  <div class="iframe-wrapper">
+    <iframe class="iframe-auto" id="bulletinIframe" title="Bulletin Board" src="bulletin_board"></iframe>
+  </div>
+  <div class="iframe-wrapper">
+    <iframe class="iframe-auto" id="positionsIframe" title="Positions Received" src="positions"></iframe>
+  </div>
+</div>
+
+<div class="footer-immediate">
+{% include 'footer.html' %}
+</div>
+
+</div>
+
+<script>
+// Función para ajustar la altura de los iframes automáticamente
+function adjustIframeHeight() {
+    const iframes = [
+        { id: 'bulletinIframe', url: 'bulletin_board' },
+        { id: 'positionsIframe', url: 'positions' }
+    ];
+
+    iframes.forEach(iframeInfo => {
+        const iframe = document.getElementById(iframeInfo.id);
+        
+        // Usar MutationObserver para detectar cambios en el contenido
+        const observer = new MutationObserver(function(mutations) {
+            adjustSingleIframe(iframe);
+        });
+
+        // Configurar el observer
+        if (iframe.contentDocument) {
+            observer.observe(iframe.contentDocument.body, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                characterData: true
+            });
+        }
+
+        // Ajustar inicialmente
+        iframe.onload = function() {
+            adjustSingleIframe(iframe);
+            // Observar cambios después de la carga
+            if (iframe.contentDocument) {
+                observer.observe(iframe.contentDocument.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                    characterData: true
+                });
+            }
+        };
+    });
+}
+
+// Función para ajustar un iframe individual
+function adjustSingleIframe(iframe) {
+    try {
+        // Esperar un poco para que el contenido se estabilice
+        setTimeout(() => {
+            const contentDocument = iframe.contentDocument || iframe.contentWindow.document;
+            const body = contentDocument.body;
+            const html = contentDocument.documentElement;
+            
+            // Calcular la altura del contenido
+            const height = Math.max(
+                body.scrollHeight,
+                body.offsetHeight,
+                html.clientHeight,
+                html.scrollHeight,
+                html.offsetHeight
+            );
+            
+            // Aplicar la altura con un pequeño margen
+            iframe.style.height = (height + 20) + 'px';
+        }, 100);
+    } catch (e) {
+        // Si hay error de CORS, usar altura por defecto
+        console.log('No se puede ajustar automáticamente debido a CORS');
+        iframe.style.height = '400px'; // Altura por defecto
+    }
+}
+
+// Ajustar alturas cuando la página carga
+document.addEventListener('DOMContentLoaded', function() {
+    adjustIframeHeight();
+    
+    // También ajustar cuando la página se recarga automáticamente
+    window.addEventListener('load', adjustIframeHeight);
+});
+
+// Reajustar periódicamente por si hay cambios dinámicos
+setInterval(adjustIframeHeight, 2000);
+</script>
+</body>
+</html>
