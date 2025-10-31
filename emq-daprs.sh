@@ -10,6 +10,10 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 #####################################
+if systemctl is-enabled --quiet daprs.service 2>/dev/null || systemctl is-active --quiet daprs.service; then
+    echo "Reiniciando daprs.service..."
+    sudo systemctl stop daprs.service
+fi
 #
 cd /opt/
 if [ -d "/opt/D-APRS" ];
