@@ -44,7 +44,7 @@ from twisted.protocols.basic import NetstringReceiver
 from twisted.internet import reactor, task
 
 # Things we import from the main hblink module
-from hblink import HBSYSTEM, OPENBRIDGE, systems, hblink_handler, reportFactory, REPORT_OPCODES, mk_aliases, aprs_upload, sendAprs
+from hblink import HBSYSTEM, OPENBRIDGE, systems, hblink_handler, reportFactory, REPORT_OPCODES, mk_aliases
 from dmr_utils3.utils import bytes_3, int_id, get_alias
 from dmr_utils3 import decode, bptc, const
 import config
@@ -184,7 +184,7 @@ def dashboard_loc_write(call, lat, lon, time, comment):
             user_loc_file.close()
     logger.info('User location saved for dashboard')
     #logger.info(dash_entries)
-
+    
 def dashboard_bb_write(call, dmr_id, time, bulletin):
     #try:
     dash_bb = ast.literal_eval(os.popen('cat ' + bb_file).read())
@@ -289,7 +289,8 @@ def user_setting_write(dmr_id, setting, value):
             user_dict_file.close()
             logger.info('User setting saved')
             f.close()
-            packet_assembly = ''    
+            packet_assembly = ''
+            
 # Process SMS, do something bases on message
 
 def process_sms(_rf_src, sms):
@@ -304,7 +305,7 @@ def process_sms(_rf_src, sms):
     elif '@COM' in sms:
         user_setting_write(int_id(_rf_src), re.sub(' .*|@','',sms), re.sub('@COM |@COM','',sms))
     elif '@PIN' in sms:
-        user_setting_write(int_id(_rf_src), re.sub(' .*|@','',sms), int(re.sub('@PIN |@PIN','',sms)))
+        user_setting_write(int_id(_rf_src), re.sub(' .*|@','',sms), int(re.sub('@PIN |@PIN','',sms)))    
     # Write blank entry to cause APRS receive to look for packets for this station.
     elif '@APRS' in sms:
         user_setting_write(int_id(_rf_src), 'APRS', '')
@@ -1826,8 +1827,6 @@ if __name__ == '__main__':
     loc_file = CONFIG['GPS_DATA']['LOCATION_FILE']
     the_mailbox_file = CONFIG['GPS_DATA']['MAILBOX_FILE']
     emergency_sos_file = CONFIG['GPS_DATA']['EMERGENCY_SOS_FILE']
-    # User APRS settings
-    user_settings_file = CONFIG['GPS_DATA']['USER_SETTINGS_FILE']
 
         # Check if user_settings (for APRS settings of users) exists. Creat it if not.
     if Path(user_settings_file).is_file():
@@ -1917,7 +1916,7 @@ if __name__ == '__main__':
                 systems[system] = routerHBP(system, CONFIG, report_server)
             reactor.listenUDP(CONFIG['SYSTEMS'][system]['PORT'], systems[system], interface=CONFIG['SYSTEMS'][system]['IP'])
             logger.debug('(GLOBAL) %s instance created: %s, %s', CONFIG['SYSTEMS'][system]['MODE'], system, systems[system])
-    aprs_upload(CONFIG)
+    #aprs_upload(CONFIG)
 
     def loopingErrHandle(failure):
         logger.error('(GLOBAL) STOPPING REACTOR TO AVOID MEMORY LEAK: Unhandled error in timed loop.\n %s', failure)

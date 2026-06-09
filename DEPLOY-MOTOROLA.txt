@@ -1,0 +1,26 @@
+CLONAR D-APRS CON SOPORTE MOTOROLA (ARS/LRRP) EN OTRO SERVIDOR
+=============================================================
+Soporta: MD-380/TYT (UDT), AnyTone (NMEA) y Motorola MOTOTRBO (ARS+LRRP).
+Los datos personales del gps_data.cfg son PLACEHOLDERS: ponlos a los tuyos.
+
+1) Copiar esta carpeta a /opt/D-APRS y crear el servicio daprs (ver install.sh).
+2) Dependencias:  pip install -r requirements.txt  +  pip install ok-dmrlib
+   (ok-dmrlib es IMPRESCINDIBLE para el motor Motorola.)
+3) Editar gps_data.cfg con TUS datos:
+   - DATA_DMR_ID y RADIO_ID  -> ID de datos de TU master (deben ser IGUALES)
+   - APRS_LOGIN_CALL         -> tu indicativo
+   - APRS_LOGIN_PASSCODE     -> tu passcode APRS (numerico)
+   - USER_APRS_SSID / USER_APRS_COMMENT -> defaults de tu red
+     (cada usuario los edita desde la radio con @SSID / @ICON / @COM)
+   - OPTIONS TS2=...         -> = DATA_DMR_ID
+   - MASTER_IP / MASTER_PORT / PASSPHRASE -> conexion a TU master DMR
+   - EMAIL_* -> opcional (funcion SMS->email)
+4) Radios Motorola (codeplug): ARS Radio ID = DATA_DMR_ID, slot 2,
+   Data Call Confirmed = ON, GPS ON, Persistent LRRP Request = Save.
+5) Motor Motorola (variables de entorno opcionales; los defaults ya valen):
+   MOTO_CONFIRMED=1        (ACK confirmado rate-3/4, lo que esperan las MOTOTRBO)
+   MOTO_LRRP_INTERVAL=120  (pide GPS periodico cada 120 s tras el registro ARS)
+6) subscriber_ids.json / peer_ids.json se autodescargan al arrancar (o ponlos
+   en /opt/D-APRS). No van en el zip por tamano.
+
+Soporte Motorola ARS+LRRP: credito C31AG.
