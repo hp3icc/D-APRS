@@ -1,0 +1,208 @@
+###################################################################################
+#                           Datos igate
+#
+# como referencia de que parametros debe cambiar , este igate esta preconfigurado con los
+# siguientes datos:
+#
+# Indicativo    : HP3ICC-10
+# APRSPASSCODE  : 19384
+# ID IGATE      : 900999
+# Beacon        : D-APRS DMR
+#
+# Este es el beacon predeterminado, que cada usuario podra personalizar desde su radio)
+#
+# Radio id y data dmr id , deben ser iguales, ejemplo: RADIO_ID: 700999  DATA_DMR_ID: 700999
+# 
+# Importante cambie estos datos por los suyos, si desconoce cual es su aprspasscode
+# entre al siguiente link para conocerlos , escriba su indicativo enminuscula y da click en generar
+#
+# http://n5dux.com/ham/aprs-passcode/
+#
+# ##################################################################################
+#                         Datos conexion al server 
+#
+# si instalo este igate en la misma maquina donde esta el server ADN Systems , en la configuracion de su server ADN Systems :
+#
+# cambiar el valor de GENERATOR: 100 y colocar  GENERATOR: 102 en su server
+#
+# utilizar el puerto 54101 en la coneccion del igate ( ya esta configurado asi como referencia )
+#
+# si instalo este igate en un equipo distinto a donde esta su server fredmr , los datos de coneccion seran los mismos
+# que utilizaria para conectar un hotspot a su server
+#
+# si este es su caso cambiar puerto 54101 por 62031
+#
+####################################################################################
+
+
+[GLOBAL]
+PATH: ./
+PING_TIME: 5
+MAX_MISSED: 3
+USE_ACL: True
+REG_ACL: PERMIT:ALL
+SUB_ACL: DENY:1
+TGID_TS1_ACL: PERMIT:ALL
+TGID_TS2_ACL: PERMIT:ALL
+
+[REPORTS]
+REPORT: True
+REPORT_INTERVAL: 60
+REPORT_PORT: 4323
+REPORT_CLIENTS: 127.0.0.1
+
+[LOGGER]
+LOG_FILE: /tmp/gps_data.log
+LOG_HANDLERS: console-timed
+LOG_LEVEL: DEBUG
+LOG_NAME: HBlink3 GPS/Data
+
+[ALIASES]
+TRY_DOWNLOAD: True
+PATH: ./
+PEER_FILE: peer_ids.json
+SUBSCRIBER_FILE: subscriber_ids.json
+TGID_FILE: talkgroup_ids.json
+PEER_URL: https://www.radioid.net/static/rptrs.json
+SUBSCRIBER_URL: https://www.radioid.net/static/users.json
+STALE_DAYS: 1
+
+######################################################################
+# configurar aqui sus datos de aprs igate                            # 
+######################################################################
+[GPS_DATA]
+# Cambiar el numero de id 700 por su numero de MCC o servidor, ejemplo panama 714999
+# el mismo numero de id que configure sera el mismo que colocara en radio id del igate
+DATA_DMR_ID: 213999
+CALL_TYPE: both
+USER_APRS_SSID: 15
+######################################################################
+# configurar aqui su beacon predeterminado                           # 
+######################################################################
+USER_APRS_COMMENT: D-APRS ADN Systems Andorra / 
+
+######################################################################
+# configurar aqui sus datos de conexion aprs                         # 
+######################################################################
+APRS_LOGIN_CALL: C31AG
+APRS_LOGIN_PASSCODE: 18064
+APRS_SERVER: rotate.aprs2.net
+APRS_PORT: 14580
+########################################################################
+
+IGATE_BEACON_TIME = 45
+IGATE_BEACON_COMMENT = D-APRS DMR 
+IGATE_BEACON_ICON = #I
+IGATE_LATITUDE = 42.5341N
+IGATE_LONGITUDE = 1.5854W
+
+USER_SETTINGS_FILE: /opt/D-APRS/user_settings.txt
+
+# The email gateway settingns below are OPTIONAL. They are NOT REQUIRED if you don't want
+http://www.aprs-is.net/javAPRSFilter.aspx# to enable the email gateway. Leave as is to disable.
+EMAIL_SENDER: test@example.org
+EMAIL_PASSWORD: letmein
+SMTP_SERVER: smtp.gmail.com
+SMTP_PORT: 465
+
+# The options below are required for operation of the dashboard and will cause errors in gps_data.py
+# if configured wrong. Leave them as default unless you know what you are doing.
+# If you do change, you must use absolute paths.
+LOCATION_FILE: /tmp/gps_data_user_loc.txt
+BULLETIN_BOARD_FILE: /tmp/gps_data_user_bb.txt
+MAILBOX_FILE: /tmp/gps_data_user_mailbox.txt
+EMERGENCY_SOS_FILE: /tmp/gps_data_user_sos.txt
+
+################################################################################
+# The following options are used for the dashboard. The dashboard is optional.
+# Title of the Dashboard
+DASHBOARD_TITLE: D-APRS Dashboard
+
+# Logo used on dashboard page
+LOGO = https://adn.systems/files/logo1.png
+
+# Port to run server
+DASH_PORT: 8092
+
+# IP to run server on
+#DASH_HOST: 127.0.0.1
+DASH_HOST: 0.0.0.0
+
+#Description of dashboard to show on main page
+DESCRIPTION: Bienvenido al Panel de Monitoreo D-APRS.
+
+# Gateway contact info displayed on about page.
+CONTACT_NAME: Adan 
+CONTACT_CALL: C31AG
+CONTACT_EMAIL: c31ag@tecnofutura.net
+CONTACT_WEBSITE: https://adn.systems/
+
+# Time format for display
+TIME_FORMAT: %%H:%%M:%%S - %%d/%%m/%%y
+
+# Center dashboard map over these coordinates
+MAP_CENTER_LAT:  42,5351791
+MAP_CENTER_LON:  1,5857199
+ZOOM_LEVEL: 7
+
+# List and preview of some map themes at http://leaflet-extras.github.io/leaflet-providers/preview/
+# The following are options for map themes and just work, you should use one of these: â€œOpenStreetMapâ€, â€œStamenâ€ (Terrain, Toner, and Watercolor),
+MAP_THEME: Stamen Terrain
+
+# RSS feed link, shows in the link section of each RSS item.
+RSS_LINK: http://localhost:8092
+
+
+#################################################################################
+
+[IGATE]
+MODE: PEER
+ENABLED: True
+LOOSE: False
+EXPORT_AMBE: False
+IP: 
+PORT: 54871
+# Si va instalar igate de aprs en un equipo distinto 
+# al que esta instalado su server freedmmr
+# cambiar 127.0.0.1 por el ip o dns de su server
+#################################################################################
+# configurar aqui dns o ip de su server ADN Systems en caso que este en otro equipo #      
+#################################################################################
+MASTER_IP: 127.0.0.1
+#172.16.238.10  #for server ADN Systems docker version
+# Si va instalar igate de aprs en un equipo distinto
+# al que esta instalado su server freedmmr
+#cambiar puerto 52556 por 62031
+#########################################################################
+# configurar aqui puerto 62031 si su server ADN Systems esta en otro equipo # 
+#########################################################################
+MASTER_PORT: 52556
+PASSPHRASE: 
+CALLSIGN: D-APRS
+# Puede cambiar el numero de id 900 por su numero de MCC o servidor, 
+# ejemplo de panama: 714999
+##########################################################################
+# configurar aqui su id dmr del igate , debe ser igual al configurado en #
+# en los datos de GPS DATA ejemplo: DATA_DMR_ID: 900999                  #
+##########################################################################
+RADIO_ID: 213999
+RX_FREQ: 433,375
+TX_FREQ: 433,375
+TX_POWER: 1
+COLORCODE: 1
+SLOTS: 2
+LATITUDE: 42,5351791
+LONGITUDE: 1,5857199
+HEIGHT: 1275
+LOCATION: Encamp
+DESCRIPTION: GPS to APRS ADN SYSTEMS
+URL: http://2131.adn.systems/index.php?p=home
+SOFTWARE_ID: 20170620
+PACKAGE_ID: MMDVM_HBlink
+GROUP_HANGTIME: 5
+OPTIONS: TS2=213999;DIAL=0;VOICE=1;LANG=es_ES;SINGLE=1;TIMER=10;
+USE_ACL: True
+SUB_ACL: DENY:1
+TGID_TS1_ACL: PERMIT:ALL
+TGID_TS2_ACL: PERMIT:ALL
+
